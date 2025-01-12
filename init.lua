@@ -380,10 +380,10 @@ local bikeColors = {
 for index, col in ipairs(bikeColors) do
     local newDef = tools.deepcopy(def)
     newDef.initial_properties.textures = {"motorbike_"..col..".png", "motorbike_"..col..".png", "motorbike_"..col..".png"}
-    newDef.drop = "motorbike:"..col
-    minetest.register_entity("motorbike:"..col, newDef)
+    newDef.drop = "motorbike:bike_"..col
+    minetest.register_entity("motorbike:bike_"..col, newDef)
 
-    minetest.register_craftitem("motorbike:"..col, {
+    minetest.register_craftitem("motorbike:bike_"..col, {
         description = "Motorbike\n"..minetest.colorize(col:gsub("_", ""), col:gsub("^%l", string.upper):gsub("_", " ")),
         inventory_image = "motorbike_"..col.."_inv.png",
         on_place = function(itemstack, placer, pointed_thing)
@@ -391,14 +391,14 @@ for index, col in ipairs(bikeColors) do
             local pos = { x = pointed_thing.above.x, y = pointed_thing.above.y + 1, z = pointed_thing.above.z }
             local pname = placer:get_player_name()
             local sdata = {owner=pname, platenumber=tools.get_plate(pname)}
-            local bike = minetest.add_entity(pos, "motorbike:"..col, minetest.serialize(sdata))
+            local bike = minetest.add_entity(pos, "motorbike:bike_"..col, minetest.serialize(sdata))
             bike:get_luaentity().angle.y = placer:get_look_horizontal()
             itemstack:take_item(1)
             return itemstack
         end
     })
     minetest.register_craft{
-    	output = "motorbike:"..col,
+    	output = "motorbike:bike_"..col,
     	recipe = {
     		{ "", "", "default:stick" },
     		{ "default:steel_ingot", "wool:"..col, "default:steel_ingot" },
